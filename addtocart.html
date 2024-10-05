@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team WebWeavers</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Catamaran:wght@200&family=Courgette&family=Dancing+Script:wght@700&family=Edu+TAS+Beginner:wght@700&family=Lato:wght@300;900&family=Mukta:wght@700&family=Mulish:wght@300&family=Open+Sans&family=PT+Sans:ital,wght@1,700&family=Poppins:wght@300&family=Raleway:wght@100&family=Roboto&family=Roboto+Condensed:wght@700&family=Roboto+Slab&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Add your custom CSS styles here */
+        /* Styles for the cart modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <h1>FlavorWaves Nexus</h1>
+            </div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#food">Foods</a></li>
+                <li><a href="#trend">Trends</a></li>
+                <li><a href="#review">Reviews</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#signup">Sign Up</a></li>
+                <li><a href="#signin">Sign In</a></li>
+                <li><a href="#" onclick="openCartModal()"><div class="icon-card"><i class="fa fa-shopping-cart"></i></a></div></li>
+            </ul>
+        </nav>
+        <!-- <div class="main">
+            <div class="mainText">
+                <h1>Discover the Best Food & <br> Drinks in FlavorWaves Nexus</h1>
+                <p>FOODIFY is a smart marketplace that ensures<br>
+                    no food is wasted. We source fresh food and <br>
+                     put it to good use, whether that is ending up as a tasty meal, <br> energy or used in materials and <br>
+                    productions, no food is wasted.</p>
+                <button>Explore Foods</button>
+            </div>
+        </div> -->
+
+        <!-- <div id="food">
+            <div class="head">
+                <h1>Our Foods</h1>
+            </div> -->
+            <div class="foods">
+                <div class="card">
+                    <div class="content">
+                        <img src="food1.JPG" alt="">
+                        <p>Rooster Chicken Rice Bowl - $10</p>
+                        <input type="number" id="quantity1" value="1" min="1">
+                        <button class="cart" onclick="addToCart('Rooster Chicken Rice Bowl', 10, 'quantity1')">Add To Cart</button>
+                    </div>
+                </div>
+                <div class="card">
+
+                    <div class="content">
+                        <img src="food2.jpg" alt="">
+                        <p>Pudding- $5</p>
+                        <input type="number" id="quantity2" value="1" min="1">
+                        <button class="cart" onclick="addToCart('Pudding', 5, 'quantity2')">Add To Cart</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Modal -->
+        <div id="cartModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeCartModal()">&times;</span>
+                <div id="cartItems"></div>
+                <p id="totalPrice"></p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="text">
+                <h3>About Us</h3>
+                <p>Welcome to FlavorWaves Nexus, where culinary excellence meets warm hospitality. Established with a passion for creating unforgettable dining experiences, we take pride in offering a haven where guests can indulge in delectable cuisine, unwind in a cozy atmosphere, and create cherished memories with friends and family.</p>
+            </div>
+            <div class="text">
+                <h3>Our Food</h3>
+                <p>Quality</p>
+                <p>Affordable</p>
+                <p>Best Price</p>
+                <p>Low Cost</p>
+            </div>
+            <div class="text">
+                <h3>Offers</h3>
+                <p>20% OFF</p>
+                <p>Free 1st meal</p>
+                <p>quality</p>
+                <p>Affordable</p>
+            </div>
+            <div class="text">
+                <h3>Connect Us</h3>
+                <p>Linked In</p>
+                <p>Facebook</p>
+                <p>Instagram</p>
+                <p>Twitter</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(itemName, price, quantityId) {
+            const quantity = parseInt(document.getElementById(quantityId).value);
+            const item = { name: itemName, price: price, quantity: quantity };
+            cart.push(item);
+            updateCart();
+        }
+
+        function updateCart() {
+            let totalPrice = 0;
+            let cartContent = "";
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                cartContent += `<p>${item.quantity} * ${item.name} - $${itemTotal.toFixed(2)}</p>`;
+            });
+
+            document.getElementById('cartItems').innerHTML = cartContent;
+            document.getElementById('totalPrice').innerText = `Total Price: $${totalPrice.toFixed(2)}`;
+            document.getElementById('cartModal').style.display = "block";
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').style.display = "none";
+        }
+
+        function openCartModal() {
+            updateCart();
+        }
+
+    </script>
+</body>
+</html>
